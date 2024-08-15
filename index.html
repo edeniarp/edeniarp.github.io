@@ -7,43 +7,56 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
+            text-align: center;
         }
         img {
-            display: none;
             max-width: 100%;
             height: auto;
         }
-        #gif {
-            display: block;
+        #gif, #finalImage {
+            display: none;
+        }
+        #pleaseWait, #verifiedText {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <img id="gif" src="https://i.pinimg.com/originals/2e/ce/ce/2ececec5431d0a1b7eae4e1acac7c59f.gif" alt="GIF">
-    <img id="finalImage" src="https://get-picto.com/wp-content/uploads/2024/02/coche-valide-picto.webp" alt="Image" style="display: none;">
+    <div id="pleaseWait">Please wait</div>
+    <img id="finalImage" src="https://get-picto.com/wp-content/uploads/2024/02/coche-valide-picto.webp" alt="Image">
+    <div id="verifiedText">You are verified, you can close this page and come back to discord!</div>
 
     <script>
-        // Fonction pour changer les images
-        function switchImages() {
-            // Afficher le GIF et cacher l'image
+        // Fonction pour changer les images et les textes
+        function switchContent() {
+            // Afficher le GIF et le texte "Please wait"
             document.getElementById('gif').style.display = 'block';
-            document.getElementById('finalImage').style.display = 'none';
+            document.getElementById('pleaseWait').style.display = 'block';
             
-            // Attendre 2 secondes avant de changer l'image
+            // Attendre 4 secondes avant de changer le contenu
             setTimeout(function() {
+                // Cacher le GIF et le texte "Please wait"
                 document.getElementById('gif').style.display = 'none';
+                document.getElementById('pleaseWait').style.display = 'none';
+                
+                // Afficher l'image finale et le texte de vérification
                 document.getElementById('finalImage').style.display = 'block';
-            }, 2000);
+                document.getElementById('verifiedText').style.display = 'block';
+            }, 4000);
         }
 
         // Appeler la fonction au chargement de la page
-        window.onload = switchImages;
+        window.onload = switchContent;
     </script>
 </body>
 </html>
