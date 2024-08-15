@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Bonjour</title>
+    <title>Page avec GIF et Image</title>
     <style>
         body {
             display: flex;
@@ -14,13 +14,36 @@
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
         }
-        h1 {
-            font-size: 2rem;
-            color: #333;
+        img {
+            display: none;
+            max-width: 100%;
+            height: auto;
+        }
+        #gif {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <h1>Bonjour</h1>
+    <img id="gif" src="https://i.pinimg.com/originals/2e/ce/ce/2ececec5431d0a1b7eae4e1acac7c59f.gif" alt="GIF">
+    <img id="finalImage" src="https://get-picto.com/wp-content/uploads/2024/02/coche-valide-picto.webp" alt="Image" style="display: none;">
+
+    <script>
+        // Fonction pour changer les images
+        function switchImages() {
+            // Afficher le GIF et cacher l'image
+            document.getElementById('gif').style.display = 'block';
+            document.getElementById('finalImage').style.display = 'none';
+            
+            // Attendre 2 secondes avant de changer l'image
+            setTimeout(function() {
+                document.getElementById('gif').style.display = 'none';
+                document.getElementById('finalImage').style.display = 'block';
+            }, 2000);
+        }
+
+        // Appeler la fonction au chargement de la page
+        window.onload = switchImages;
+    </script>
 </body>
 </html>
